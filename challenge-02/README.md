@@ -22,12 +22,13 @@ Crie uma função que adicione um valor à variável criada acima, e retorne a s
     O valor da variável agora é VALOR.
 Onde VALOR é o novo valor da variável.
 */
-function funcao(semValor){
+function funcao(){
+    semValor = 25;
     return "O valor da variável agora é " + semValor;
 }
 
 // Invoque a função criada acima.
-funcao(30);
+funcao();
 
 // Qual o retorno da função? (Use comentários de bloco).
 /*  "O valor da variável agora é 30"  */
@@ -40,11 +41,12 @@ Crie uma função com as seguintes características:
 3. O retorno da função deve ser a multiplicação dos 3 argumentos, somando `2` ao resultado da multiplicação.
 */
 function funcao2(a, b, c){
-    if(a != null && b != null && c != null){
+    if(a !== undefined && b !== undefined && c != undefined){
         return (a * b * c) + 2;
-    }else{
-        return "Preencha todos os valores corretamente!";
     }
+    
+    return "Preencha todos os valores corretamente!";
+    
 }
 
 // Invoque a função criada acima, passando só dois números como argumento.
@@ -70,13 +72,13 @@ Crie uma função com as seguintes características:
 6. E ainda, se nenhuma das condições acima forem atendidas, retorne `null`.
 */
 function funcao3(a, b, c){
-    if( b == null && c == null){
+    if( a !== undefined && b === undefined && c == undefined){
         return a;
-    }else if(c == null){
+    }else if( a !== undefined && b !== undefined && c === undefined){
         return a + b;
-    }else if(a != null && b != null && c != null){
+    }else if(a !== undefined && b !== undefined && c !== undefined){
         return (a + b) / c;
-    }else if(a == null && b == null && c == null){
+    }else if(a === undefined && b === undefined && c === undefined){
         return false;
     }else{
         return null;
