@@ -23,3 +23,77 @@ multiplicação (x), então no input deve aparecer "1+2x".
 input;
 - Ao pressionar o botão "CE", o input deve ficar zerado.
 */
+(function(win, doc) {
+  "use strict";
+
+  var $visor = doc.querySelector('[data-js="visor"]');
+  var $buttonNumbers = doc.querySelectorAll('[data-js="button-number"]');
+  var $buttonCe = doc.querySelector('[data-js="button-ce"]');
+  var $buttonOperations = doc.querySelectorAll('[data-js="button-operation"]');
+  var $buttonEqual = doc.querySelector('[data-js="button-equal"]');
+
+  Array.prototype.forEach.call($buttonNumbers, function(button) {
+    button.addEventListener("click", handleClickNumber, false);
+  });
+
+  Array.prototype.forEach.call($buttonOperations, function(button) {
+    button.addEventListener("click", handleClickOperation, false);
+  });
+
+  $buttonCe.addEventListener("click", handleClickCE, false);
+
+  $buttonEqual.addEventListener("click", handleClickEqual, false);
+
+  function handleClickNumber() {
+    $visor.value += this.value;
+  }
+
+  function handleClickOperation() {
+    $visor.value = removeLastItemIfItIsAnOperator($visor.value);
+
+    $visor.value += this.value;
+  }
+
+  function handleClickCE() {
+    $visor.value = 0;
+  }
+
+  function isLastItemAnOperation(number) {
+    var operations = ["+", "-", "*", "/"];
+    var lastItem = number.split("").pop();
+    return operations.some(function(operator) {
+      return operator === lastItem;
+    });
+  }
+
+  function removeLastItemIfItIsAnOperator(number) {
+    if (isLastItemAnOperation(number)) {
+      return number.slice(0, -1);
+    }
+
+    return number;
+  }
+  function handleClickEqual() {
+    $visor.value = removeLastItemIfItIsAnOperator($visor.value);
+
+    var allValues = $visor.value.match(/\d+[+*/-]?/g);
+    $visor.value = allValues.reduce(function(accumulated, actual) {
+      var firstValue = accumulated.slice(0, -1);
+      var operator = accumulated.split("").pop();
+      var lastValue = removeLastItemIfItIsAnOperator(actual);
+      var lastOperator = isLastItemAnOperation(actual)
+        ? actual.split("").pop()
+        : "";
+      switch (operator) {
+        case "+":
+          return Number(firstValue) + Number(lastValue) + lastOperator;
+        case "-":
+          return firstValue - lastValue + lastOperator;
+        case "*":
+          return firstValue * lastValue + lastOperator;
+        case "/":
+          return firstValue / lastValue + lastOperator;
+      }
+    });
+  }
+})(window, document);
